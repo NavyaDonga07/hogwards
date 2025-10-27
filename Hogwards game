@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nexa Minds — School of Sorcery (Level 1)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-container">
+    <header>
+      <h1>Nexa Minds: School of Sorcery</h1>
+      <p class="subtitle">Solve the puzzles to make the enchanted door open.</p>
+    </header>
+
+    <main>
+      <section class="room">
+        <div class="scene">
+          <div id="door" class="door closed">
+            <div class="door-knob"></div>
+          </div>
+          <div class="status-bubble" id="status">Puzzles solved: 0 / 3</div>
+        </div>
+
+        <div class="puzzles">
+          <div class="puzzle card" id="puzzle1">
+            <h2>Riddle of the Echo</h2>
+            <p class="hint">I speak without a mouth and hear without ears. I have nobody, but I come alive with wind. What am I?</p>
+            <input id="riddleAnswer" placeholder="Type your answer..." />
+            <button data-action="checkRiddle">Submit</button>
+            <div class="feedback" id="f1"></div>
+          </div>
+
+          <div class="puzzle card" id="puzzle2">
+            <h2>Sequence Spell</h2>
+            <p class="hint">Complete the pattern: 2, 4, 8, 16, ___</p>
+            <div class="options">
+              <button data-option="20">20</button>
+              <button data-option="32">32</button>
+              <button data-option="24">24</button>
+            </div>
+            <div class="feedback" id="f2"></div>
+          </div>
+
+          <div class="puzzle card" id="puzzle3">
+            <h2>Rune Switches</h2>
+            <p class="hint">Flip the three runes to match the magical pattern: ON, OFF, ON</p>
+            <div class="switches">
+              <button class="toggle" data-i="0">OFF</button>
+              <button class="toggle" data-i="1">OFF</button>
+              <button class="toggle" data-i="2">OFF</button>
+            </div>
+            <div><button id="checkSwitches">Check Pattern</button></div>
+            <div class="feedback" id="f3"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="controls">
+        <button id="hintBtn">Ask a friendly portrait for a hint</button>
+        <div id="hintText" class="hintText"></div>
+      </section>
+    </main>
+
+    <footer>
+      <small>Made by Nexa Minds — Navya + Nova ✨</small>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+:root{
+  --bg:#0b1020;
+  --card:#111827;
+  --accent:#7b61ff;
+  --muted:#9aa4b2;
+  --glass: rgba(255,255,255,0.04);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, #071226 0%, #061223 100%);
+  color:#e6eef8;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.game-container{
+  width:980px;
+  max-width:95%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:14px;
+  padding:18px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+header h1{margin:0;font-size:20px;letter-spacing:0.6px}
+.subtitle{color:var(--muted);margin-top:6px}
+
+.room{display:flex;gap:18px;margin-top:16px}
+.scene{flex:1; position:relative; padding:20px; border-radius:10px; background:linear-gradient(180deg,#071226,#0b1730); min-height:360px; display:flex; align-items:center; justify-content:center;}
+.puzzles{width:420px; display:flex; flex-direction:column; gap:12px;}
+
+.card{
+  background:var(--card);
+  padding:12px;border-radius:10px; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2);
+}
+
+.door{
+  width:230px;
+  height:340px;
+  background:linear-gradient(180deg,#2b1f3e,#402a5a);
+  border-radius:6px;
+  position:relative;
+  transition: transform 1s ease, opacity 1s ease;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6), inset 0 0 40px rgba(123,97,255,0.08);
+}
+.door-knob{
+  width:20px;height:20px;background:#ffd27f;border-radius:50%;position:absolute;right:32px;top:50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.door.open{
+  transform: translateX(260px) rotateY(20deg) scale(0.95);
+  opacity:0.35;
+}
+
+.status-bubble{
+  position:absolute; left:22px; top:18px; background:var(--glass); padding:8px 12px; border-radius:999px; color:var(--muted); font-size:14px;
+}
+
+.puzzle h2{margin:0 0 6px 0}
+.puzzle .hint{color:var(--muted); margin:0 0 8px 0}
+
+input{width:100%; padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit}
+button{cursor:pointer;padding:8px 10px;border-radius:8px;border:0;background:linear-gradient(90deg,var(--accent),#4f9bff); color:white; font-weight:600; margin-top:6px}
+.options button{background:transparent;border:1px solid rgba(255,255,255,0.06); color:var(--muted); padding:8px 12px; border-radius:8px; margin-right:8px}
+.switches{display:flex; gap:8px}
+.toggle{background:#24303f;border:0;padding:10px 16px;border-radius:8px;color:var(--muted)}
+.toggle.on{background:linear-gradient(90deg,var(--accent),#4f9bff); color:white}
+
+.feedback{margin-top:8px; color: #ffd7a8; min-height:20px}
+
+.controls{margin-top:12px; display:flex; gap:12px; align-items:center}
+.hintText{color:var(--muted); max-width:70%;}
+
+footer{margin-top:12px; text-align:right; color:var(--muted); font-size:13px}
+// Simple Level 1 prototype logic
+(() => {
+  const state = { solved: 0, p1:false, p2:false, p3:false };
+  const statusEl = document.getElementById('status');
+  const f1 = document.getElementById('f1');
+  const f2 = document.getElementById('f2');
+  const f3 = document.getElementById('f3');
+  const door = document.getElementById('door');
+
+  // Puzzle 1 — riddle: answer "echo"
+  document.querySelector('button[data-action="checkRiddle"]').addEventListener('click', () => {
+    const val = (document.getElementById('riddleAnswer').value || '').trim().toLowerCase();
+    if (!val) { f1.textContent = 'Try typing an answer.'; return; }
+    if (val === 'echo') {
+      if (!state.p1) {
+        state.p1 = true; state.solved++;
+        updateStatus();
+      }
+      f1.textContent = 'Correct — the portrait nods.';
+      f1.style.color = '#b6f2c7';
+    } else {
+      f1.textContent = "Not quite — think of sounds bouncing back.";
+      f1.style.color = '#ffd7a8';
+    }
+    checkAllSolved();
+  });
+
+  // Puzzle 2 — sequence: answer 32
+  document.querySelectorAll('#puzzle2 .options button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val = btn.dataset.option;
+      if (val === '32') {
+        if (!state.p2) { state.p2 = true; state.solved++; updateStatus(); }
+        f2.textContent = 'Right! The chalkboard glows.';
+        f2.style.color = '#b6f2c7';
+      } else {
+        f2.textContent = "Try again — think doubling.";
+        f2.style.color = '#ffd7a8';
+      }
+      checkAllSolved();
+    });
+  });
+
+  // Puzzle 3 — three toggles to match pattern ON, OFF, ON
+  const toggles = Array.from(document.querySelectorAll('.toggle'));
+  const toggleState = [false,false,false];
+  toggles.forEach((t, i) => {
+    t.addEventListener('click', () => {
+      toggleState[i] = !toggleState[i];
+      t.classList.toggle('on', toggleState[i]);
+      t.textContent = toggleState[i] ? 'ON' : 'OFF';
+    });
+  });
+
+  document.getElementById('checkSwitches').addEventListener('click', () => {
+    const correct = toggleState[0] === true && toggleState[1] === false && toggleState[2] === true;
+    if (correct) {
+      if (!state.p3) { state.p3 = true; state.solved++; updateStatus(); }
+      f3.textContent = 'The runes glow — a distant click is heard.';
+      f3.style.color = '#b6f2c7';
+    } else {
+      f3.textContent = 'The pattern is wrong. Try different rune flips.';
+      f3.style.color = '#ffd7a8';
+    }
+    checkAllSolved();
+  });
+
+  // Hint button (portrait gives a hint)
+  document.getElementById('hintBtn').addEventListener('click', () => {
+    const remaining = 3 - state.solved;
+    const text = remaining === 0 ? "You don't need hints — you're doing great!" :
+      "Hint: Riddle loves echoes. Sequence doubles. Rune pattern = ON, OFF, ON.";
+    document.getElementById('hintText').textContent = text;
+  });
+
+  function updateStatus(){
+    statusEl.textContent = `Puzzles solved: ${state.solved} / 3`;
+  }
+
+  function checkAllSolved(){
+    if (state.solved >= 3) {
+      // open the door animation & store unlock
+      door.classList.add('open');
+      statusEl.textContent = 'All puzzles solved! Level 2 unlocked.';
+      // save progress (simple)
+      localStorage.setItem('nexa_level', '2');
+      // celebratory message
+      setTimeout(()=> {
+        alert('BRAVO Nexa Minds! The door opens to Level 2: Magical Castle Towers.');
+      }, 400);
+    }
+  }
+
+  // Initialize
+  updateStatus();
+})();
